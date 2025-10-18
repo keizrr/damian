@@ -1,53 +1,78 @@
-
-  (function ($) {
+(function () {
   
   "use strict";
 
-    // MENU
-    $('.navbar-collapse a').on('click',function(){
-      $(".navbar-collapse").collapse('hide');
+  // MENU - Close navbar collapse when clicking a link
+  const navbarCollapse = document.querySelector('.navbar-collapse');
+  if (navbarCollapse) {
+    const navLinks = navbarCollapse.querySelectorAll('a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+        if (bsCollapse) {
+          bsCollapse.hide();
+        }
+      });
     });
+  }
+  
+  // CUSTOM LINK - Smooth scroll
+  const smoothScrollLinks = document.querySelectorAll('.smoothscroll');
+  smoothScrollLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        e.preventDefault();
+        const navbar = document.querySelector('.navbar');
+        const headerHeight = navbar ? navbar.offsetHeight : 0;
+        
+        scrollToDiv(targetElement, headerHeight);
+      }
+    });
+  });
+
+  function scrollToDiv(element, navheight) {
+    const offsetTop = element.offsetTop;
+    const totalScroll = offsetTop - navheight;
     
-    // CUSTOM LINK
-    $('.smoothscroll').click(function(){
-      var el = $(this).attr('href');
-      var elWrapped = $(el);
-      var header_height = $('.navbar').height();
-  
-      scrollToDiv(elWrapped,header_height);
-      return false;
-  
-      function scrollToDiv(element,navheight){
-        var offset = element.offset();
-        var offsetTop = offset.top;
-        var totalScroll = offsetTop-navheight;
-  
-        $('body,html').animate({
-        scrollTop: totalScroll
-        }, 300);
-      }
+    window.scrollTo({
+      top: totalScroll,
+      behavior: 'smooth'
     });
+  }
 
-    $(window).on('scroll', function(){
-      function isScrollIntoView(elem, index) {
-        var docViewTop = $(window).scrollTop();
-        var docViewBottom = docViewTop + $(window).height();
-        var elemTop = $(elem).offset().top;
-        var elemBottom = elemTop + $(window).height()*.5;
-        if(elemBottom <= docViewBottom && elemTop >= docViewTop) {
-          $(elem).addClass('active');
-        }
-        if(!(elemBottom <= docViewBottom)) {
-          $(elem).removeClass('active');
-        }
-        var MainTimelineContainer = $('#vertical-scrollable-timeline')[0];
-        var MainTimelineContainerBottom = MainTimelineContainer.getBoundingClientRect().bottom - $(window).height()*.5;
-        $(MainTimelineContainer).find('.inner').css('height',MainTimelineContainerBottom+'px');
-      }
-      var timeline = $('#vertical-scrollable-timeline li');
-      Array.from(timeline).forEach(isScrollIntoView);
+  // TIMELINE SCROLL ANIMATION
+  window.addEventListener('scroll', function() {
+    const timeline = document.querySelectorAll('#vertical-scrollable-timeline li');
+    
+    timeline.forEach((elem, index) => {
+      isScrollIntoView(elem, index);
     });
-  
-  })(window.jQuery);
+  });
 
+  function isScrollIntoView(elem, index) {
+    const docViewTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docViewBottom = docViewTop + window.innerHeight;
+    const elemTop = elem.getBoundingClientRect().top + docViewTop;
+    const elemBottom = elemTop + window.innerHeight * 0.5;
+    
+    if (elemBottom <= docViewBottom && elemTop >= docViewTop) {
+      elem.classList.add('active');
+    }
+    if (!(elemBottom <= docViewBottom)) {
+      elem.classList.remove('active');
+    }
+    
+    const mainTimelineContainer = document.getElementById('vertical-scrollable-timeline');
+    if (mainTimelineContainer) {
+      const mainTimelineContainerBottom = mainTimelineContainer.getBoundingClientRect().bottom - window.innerHeight * 0.5;
+      const inner = mainTimelineContainer.querySelector('.inner');
+      if (inner) {
+        inner.style.height = mainTimelineContainerBottom + 'px';
+      }
+    }
+  }
 
+})();
