@@ -526,7 +526,7 @@ strong {
 .featured-section {
   background-color: var(--secondary-color);
   border-radius: 0 0 100px 100px;
-  padding-bottom: 100px;
+  padding-bottom: 155px;
 }
 
 .featured-section .row {
