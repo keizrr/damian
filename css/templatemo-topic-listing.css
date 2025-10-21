@@ -291,6 +291,8 @@ strong {
   background: transparent;
   border-bottom: 1px solid rgba(128, 208, 199, 0.35);
   z-index: 9;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .navbar-brand,
@@ -318,8 +320,8 @@ strong {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .navbar-nav .nav-link.active, 
