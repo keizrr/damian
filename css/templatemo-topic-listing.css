@@ -1077,6 +1077,13 @@ blockquote {
     background-color: linear-gradient(180deg, #f5fffe 0%, #e8f9f7 100%);
   }
 
+  .navbar-collapse {
+    background: #f5fffe;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
   .navbar-nav .dropdown-menu {
     position: relative;
     left: 10px;
